@@ -1,6 +1,5 @@
 import React from 'react';
 import Header from './header';
-import ProductListItem from './product-list-item';
 import ProductList from './product-list';
 
 export default class App extends React.Component {
@@ -28,7 +27,6 @@ export default class App extends React.Component {
     return (
       <div>
         <Header />
-        <ProductListItem products={this.state.products}/>
         <div className='row-sm-4'>
           <ProductList products={this.state.products}/>
         </div>
