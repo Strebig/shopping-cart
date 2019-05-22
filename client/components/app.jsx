@@ -30,8 +30,6 @@ export default class App extends React.Component {
   }
 
   setView(name, params) {
-    name = 'details';
-    params = { id: this.state.products.id };
     this.setState({
       view: {
         name,
@@ -45,7 +43,7 @@ export default class App extends React.Component {
     let mainPage;
 
     if (mainView === 'details') {
-      mainPage = <ProductDetails view={this.state.view}/>;
+      mainPage = <ProductDetails view={this.state.view} params={this.state.view.params} setView={this.setView}/>;
     } else if (mainView === 'catalog') {
       mainPage = <ProductList products={this.state.products} setView={this.setView}/>;
     }
