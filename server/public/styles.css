@@ -1,3 +1,22 @@
 .card {
     width: 18rem;
 }
+
+.red {
+    color: red;
+}
+
+.main-height {
+    height: 50%;
+}
+
+.details {
+    height: 50vh;
+    width: 80%;
+}
+
+.image-details {
+    height: 330px;
+    width: 540px;
+}
+
