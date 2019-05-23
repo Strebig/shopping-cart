@@ -11,6 +11,7 @@ export default class ProductList extends React.Component {
           image = {products.image}
           key = {products.id}
           setView = {this.props.setView}
+          addToCart = {this.props.addToCart}
         />
       );
     });
