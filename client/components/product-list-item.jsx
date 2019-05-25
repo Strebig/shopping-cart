@@ -12,7 +12,7 @@ export default class ProductListItem extends React.Component {
   }
 
   handleCart(e) {
-    this.props.addToCart(this.props.products.id);
+    this.props.addToCart(this.props.products);
   }
 
   render() {
@@ -23,7 +23,7 @@ export default class ProductListItem extends React.Component {
           <img className="card-img-top main-height" src={this.props.products.image} alt="Product Image" onClick={this.props.setView}></img>
           <div className="card-body">
             <h5 className="card-title">{this.props.products.name}</h5>
-            <h5 className="card-title">${this.props.products.price / 100}</h5>
+            <h5 className="card-title">${(this.props.products.price / 100).toFixed(2)}</h5>
             <p className="card-text">{this.props.products.shortDescription}</p>
             <div className="row">
               <button className="btn btn-primary col-sm-5" onClick={this.handleView}>Learn More </button>

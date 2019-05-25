@@ -22,8 +22,8 @@ export default class ProductDetails extends React.Component {
     this.props.setView('catalog', { 'id': '' });
   }
 
-  handleCart(e) {
-    this.props.addToCart(this.props.params.id);
+  handleCart() {
+    this.props.addToCart(this.state.product);
   }
 
   render() {
@@ -45,7 +45,7 @@ export default class ProductDetails extends React.Component {
             </div>
             <div className="col-sm-6">
               <h5 className="card-title"><b>{this.state.product.name}</b></h5>
-              <h5 className="card-title red" >${this.state.product.price / 100}</h5>
+              <h5 className="card-title red" >${(this.state.product.price / 100).toFixed(2)}</h5>
               <p className="card-text">{this.state.product.shortDescription}</p>
               <button className="btn btn-success" onClick={this.handleCart}>Add to Cart </button>
             </div>
