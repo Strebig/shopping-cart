@@ -10,14 +10,18 @@ export default class CartSummaryItem extends React.Component {
     this.props.setView('catalog', { 'id': '' });
   }
 
+  handleCheckout() {
+    this.props.setView('checkout', {});
+  }
+
   render() {
     let totalPrice = this.props.cartItem;
     let currentPrice = 0;
     let finalPrice;
 
-    let items = this.props.cartItem.map(item => {
+    let items = this.props.cartItem.map((item, i) => {
       return (
-        <div key={item.id}>
+        <div key={i}>
           <div className="row">
             <div className="col-sm-6">
               <img className="card-img-top image-details" src={item.image} alt="Product Image" ></img>
@@ -37,6 +41,7 @@ export default class CartSummaryItem extends React.Component {
         currentPrice += parseInt(item.price);
       }
       const newPrice = currentPrice / 100;
+      // this.props.updateTotalPrice(newPrice);
       finalPrice = <h5 className="card-title red" >Total Cost: ${newPrice.toFixed(2)}</h5>;
     } else {
       finalPrice = <h2 className="card-title"><b>There are no items in your cart</b></h2>;
@@ -53,6 +58,7 @@ export default class CartSummaryItem extends React.Component {
         </div>
         {items}
         {finalPrice}
+        <div><button onClick={this.handleCheckout.bind(this)} className="btn-success">Checkout</button></div>
       </div>
     );
   }
