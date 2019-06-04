@@ -26,7 +26,7 @@ export default class ProductListItem extends React.Component {
             <h5 className="card-title">${(this.props.products.price / 100).toFixed(2)}</h5>
             <p className="card-text">{this.props.products.shortDescription}</p>
             <div className="row">
-              <button className="btn btn-primary col-sm-5" onClick={this.handleView}>Learn More </button>
+              <button className="btn btn-warning col-sm-5" onClick={this.handleView}>Details </button>
               <button className="btn btn-success col-sm-5" onClick={this.handleCart}>Buy Now </button>
             </div>
           </div>
