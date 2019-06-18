@@ -1,5 +1,36 @@
+.header{
+    height: 10vh;
+    background-color: lightblue;
+}
+.cart{
+    margin-top: 8px;
+    color: rgba(255, 0, 0, 0.658);
+
+}
+.titleText{
+    margin-top: 5px;
+    color: rgba(255, 0, 0, 0.658);
+    margin-left: 70px;
+}
+.cartItems{
+    margin-bottom: 25px;
+    margin-top:10px;
+}
+.cartText{
+    margin-top: 80px;
+}
+.checkoutForm{
+    margin-top: 100px;
+}
 .card {
     width: 18rem;
+}
+.mainProducts{
+    margin: 8px;
+}
+.mainProductButton{
+    margin-top: 10px;
+    margin-left:10%;
 }
 
 .red {
@@ -18,5 +49,18 @@
 .image-details {
     height: 330px;
     width: 540px;
+}
+.placeOrder{
+    margin-top: 30px;
+    width: 200px;
+    height: 60px;
+    margin-left: 35%;
+}
+.checkoutPrice{
+    margin-top: 75px;
+}
+.checkout{
+    margin-top: 25px;
+    margin-bottom: 90px;
 }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Row, Col, NavbarBrand } from 'reactstrap';
 
 export default class Header extends React.Component {
 
@@ -8,14 +9,18 @@ export default class Header extends React.Component {
 
   render() {
     return (
-      <div className="container-fluid row">
-        <div className='col-sm-10'>
-          <h1 className="fab fa-pied-piper-alt"> Wicked Sales</h1>
-        </div>
-        <div className='col-sm-2'>
-          <h2 className='fas fa-shopping-cart' onClick={this.checkOut.bind(this)}>{this.props.cartCount}</h2>
-        </div>
-      </div>
+      <Row className='header '>
+        <Col >
+          <NavbarBrand href='/' >
+            <h1 className='titleText'>Wicked Sales</h1>
+          </NavbarBrand>
+        </Col>
+        <Col className='col-3 ' >
+          <NavbarBrand href='#' onClick={this.checkOut.bind(this)}>
+            <h1 className='fas fa-shopping-cart cart'>{this.props.cartCount}</h1>
+          </NavbarBrand>
+        </Col>
+      </Row>
     );
   }
 }

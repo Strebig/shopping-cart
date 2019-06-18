@@ -1,5 +1,6 @@
 import React from 'react';
 import ProductListItem from './product-list-item';
+import { Container, Row } from 'reactstrap';
 
 export default class ProductList extends React.Component {
 
@@ -17,11 +18,11 @@ export default class ProductList extends React.Component {
     });
 
     return (
-      <div className="container">
-        <div className="row ">
+      <Container>
+        <Row className='offset-1'>
           {product}
-        </div>
-      </div>
+        </Row>
+      </Container>
     );
   }
 }

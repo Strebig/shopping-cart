@@ -1,4 +1,5 @@
 import React from 'react';
+import { Container, Row } from 'reactstrap';
 
 export default class ProductDetails extends React.Component {
   constructor(props) {
@@ -27,37 +28,41 @@ export default class ProductDetails extends React.Component {
   }
 
   render() {
-    let productView;
-
-    if (this.state.product) {
-      productView = (
-        <div className="container text-center" >
-          <div className="card-header">
-            <ul className="nav nav-pills card-header-pills">
-              <li className="nav-item">
-                <a className="nav-link active" onClick={this.handleView}>Back to Catalog</a>
-              </li>
-            </ul>
+    let details = this.props.products.map((item, i) => {
+      if (item.id === this.props.params.id) {
+        return (
+          <div key={i}>
+            <Container fluid className='text-center' >
+              <div className="card-header">
+                <ul className="nav nav-pills card-header-pills">
+                  <li className="nav-item">
+                    <a className="nav-link active" href='' onClick={this.handleView}>Back to Catalog</a>
+                  </li>
+                </ul>
+              </div>
+              <Row>
+                <div className="col-12 col-md-6">
+                  <img className="card-img-top image-details col-12" src={item.image} alt="Product Image" ></img>
+                </div>
+                <div className="col-12 col-md-6">
+                  <h5 className="card-title"><b>{item.name}</b></h5>
+                  <h5 className="card-title red" >${(item.price / 100).toFixed(2)}</h5>
+                  <p className="card-text">{item.shortDesc}</p>
+                  <button className="btn btn-success" onClick={this.handleCart}>Add to Cart </button>
+                </div>
+              </Row>
+              <Row>
+                <p className="card-text">{item.longDesc}</p>
+              </Row>
+            </Container>
           </div>
-          <div className="row">
-            <div className="col-sm-6">
-              <img className="card-img-top image-details" src={this.state.product.image} alt="Product Image" ></img>
-            </div>
-            <div className="col-sm-6">
-              <h5 className="card-title"><b>{this.state.product.name}</b></h5>
-              <h5 className="card-title red" >${(this.state.product.price / 100).toFixed(2)}</h5>
-              <p className="card-text">{this.state.product.shortDescription}</p>
-              <button className="btn btn-success" onClick={this.handleCart}>Add to Cart </button>
-            </div>
-          </div>
-          <p className="card-text">{this.state.product.longDescription}</p>
-        </div>
-      );
-    }
+        );
+      }
+    });
     return (
-      <div className='container-fluid'>
-        {productView}
-      </div>
+      <Container fluid>
+        {details}
+      </Container>
     );
   }
 }

@@ -84,7 +84,6 @@ export default class App extends React.Component {
     fetch('/api/orders.php', req)
       .then(order => order.json())
       .then(checkout => {
-        // console.log('checkout', checkout);
         this.setState({
           view: {
             name: 'catalog',
@@ -100,7 +99,7 @@ export default class App extends React.Component {
     let mainPage;
 
     if (mainView === 'details') {
-      mainPage = <ProductDetails view={this.state.view} params={this.state.view.params} setView={this.setView} addToCart={this.addToCart}/>;
+      mainPage = <ProductDetails products={this.state.products} view={this.state.view} params={this.state.view.params} setView={this.setView} addToCart={this.addToCart}/>;
     } else if (mainView === 'catalog') {
       mainPage = <ProductList products={this.state.products} setView={this.setView} addToCart={this.addToCart}/>;
     } else if (mainView === 'summary') {
@@ -111,9 +110,7 @@ export default class App extends React.Component {
     return (
       <div>
         <Header params={this.state.view.params} setView={this.setView} cartCount={this.state.cart.length}/>
-        <div className='row-sm-4'>
-          {mainPage}
-        </div>
+        {mainPage}
       </div>
     );
   }

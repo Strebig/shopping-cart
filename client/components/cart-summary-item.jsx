@@ -1,4 +1,5 @@
 import React from 'react';
+import { Row } from 'reactstrap';
 
 export default class CartSummaryItem extends React.Component {
 
@@ -22,16 +23,16 @@ export default class CartSummaryItem extends React.Component {
     let items = this.props.cartItem.map((item, i) => {
       return (
         <div key={i}>
-          <div className="row">
-            <div className="col-sm-6">
+          <Row className='cartItems'>
+            <div className="col-12 col-md-6">
               <img className="card-img-top image-details" src={item.image} alt="Product Image" ></img>
             </div>
-            <div className="col-sm-6">
+            <div className="col-12 col-md-6 cartText">
               <h5 className="card-title"><b>{item.name}</b></h5>
               <h5 className="card-title red" >${(item.price / 100).toFixed(2)}</h5>
-              <p className="card-text">{item.shortDescription}</p>
+              <p className="card-text">{item.shortDesc}</p>
             </div>
-          </div>
+          </Row>
         </div>
       );
     });
@@ -52,13 +53,19 @@ export default class CartSummaryItem extends React.Component {
         <div className="card-header">
           <ul className="nav nav-pills card-header-pills">
             <li className="nav-item">
-              <a className="nav-link active" onClick={this.handleView.bind(this)}>Back to Catalog</a>
+              <a className="nav-link active" href='' onClick={this.handleView.bind(this)}>Back to Catalog</a>
             </li>
           </ul>
         </div>
         {items}
-        {finalPrice}
-        <div><button onClick={this.handleCheckout.bind(this)} className="btn-success">Checkout</button></div>
+        <div className='checkoutPrice'>
+          {finalPrice}
+        </div>
+        <div className='checkout'>
+          <button onClick={this.handleCheckout.bind(this)} className="btn-success btn-lg">
+            Checkout
+          </button>
+        </div>
       </div>
     );
   }
