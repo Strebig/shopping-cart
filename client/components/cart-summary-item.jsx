@@ -53,7 +53,7 @@ export default class CartSummaryItem extends React.Component {
         <div className="card-header">
           <ul className="nav nav-pills card-header-pills">
             <li className="nav-item">
-              <a className="nav-link active" href='' onClick={this.handleView.bind(this)}>Back to Catalog</a>
+              <a className="nav-link active" href='#' onClick={this.handleView.bind(this)}>Back to Catalog</a>
             </li>
           </ul>
         </div>

@@ -19,7 +19,6 @@ $json_output = json_encode($output);
 
 if (empty($_GET['id'])) {
   print($json_output);
-  // readfile('dummy-products-list.json');
 } else {
   readfile('dummy-product-details.json');
 }

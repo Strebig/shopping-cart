@@ -9,11 +9,9 @@ export default class Header extends React.Component {
 
   render() {
     return (
-      <Row className='header '>
+      <Row className='header col-12'>
         <Col >
-          <NavbarBrand href='/' >
-            <h1 className='titleText'>Wicked Sales</h1>
-          </NavbarBrand>
+          <h1 className='titleText'>As Seen on T.V.!</h1>
         </Col>
         <Col className='col-3 ' >
           <NavbarBrand href='#' onClick={this.checkOut.bind(this)}>

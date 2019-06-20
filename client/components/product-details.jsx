@@ -36,7 +36,7 @@ export default class ProductDetails extends React.Component {
               <div className="card-header">
                 <ul className="nav nav-pills card-header-pills">
                   <li className="nav-item">
-                    <a className="nav-link active" href='' onClick={this.handleView}>Back to Catalog</a>
+                    <a className="nav-link active" href='#' onClick={this.handleView}>Back to Catalog</a>
                   </li>
                 </ul>
               </div>
@@ -44,7 +44,7 @@ export default class ProductDetails extends React.Component {
                 <div className="col-12 col-md-6">
                   <img className="card-img-top image-details col-12" src={item.image} alt="Product Image" ></img>
                 </div>
-                <div className="col-12 col-md-6">
+                <div className="col-12 col-md-6 detailView">
                   <h5 className="card-title"><b>{item.name}</b></h5>
                   <h5 className="card-title red" >${(item.price / 100).toFixed(2)}</h5>
                   <p className="card-text">{item.shortDesc}</p>
@@ -52,7 +52,7 @@ export default class ProductDetails extends React.Component {
                 </div>
               </Row>
               <Row>
-                <p className="card-text">{item.longDesc}</p>
+                <p className="card-text offset-6">{item.longDesc}</p>
               </Row>
             </Container>
           </div>

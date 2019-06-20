@@ -15,12 +15,18 @@
 .cartItems{
     margin-bottom: 25px;
     margin-top:10px;
+    border-style: solid;
+    border-width: 1px;
+    border-left: solid rgb(65, 206, 253) 30px;
+}
+.detailView{
+    margin-top: 60px;
 }
 .cartText{
     margin-top: 80px;
 }
 .checkoutForm{
-    margin-top: 100px;
+    margin-top: 50px;
 }
 .card {
     width: 18rem;
