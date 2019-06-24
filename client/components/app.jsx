@@ -113,6 +113,7 @@ export default class App extends React.Component {
         passed = false;
       } else if (entries[i][0] === 'fullName' && entries[i][1] === '') {
         errors[entries[i][0]] = 'Required';
+        passed = false;
       } else if (entries[i][0] === 'fullName') {
         errors[entries[i][0]] = '';
       }
@@ -121,6 +122,7 @@ export default class App extends React.Component {
         passed = false;
       } else if (entries[i][0] === 'address' && entries[i][1] === '') {
         errors[entries[i][0]] = 'Required';
+        passed = false;
       } else if (entries[i][0] === 'address') {
         errors[entries[i][0]] = '';
       }
@@ -129,6 +131,7 @@ export default class App extends React.Component {
         passed = false;
       } else if (entries[i][0] === 'city' && entries[i][1] === '') {
         errors[entries[i][0]] = 'Required';
+        passed = false;
       } else if (entries[i][0] === 'city') {
         errors[entries[i][0]] = '';
       }
@@ -137,6 +140,7 @@ export default class App extends React.Component {
         passed = false;
       } else if (entries[i][0] === 'state' && entries[i][1] === '') {
         errors[entries[i][0]] = 'Required';
+        passed = false;
       } else if (entries[i][0] === 'state') {
         errors[entries[i][0]] = '';
       }
@@ -145,6 +149,7 @@ export default class App extends React.Component {
         passed = false;
       } else if (entries[i][0] === 'zip' && entries[i][1] === '') {
         errors[entries[i][0]] = 'Required';
+        passed = false;
       } else if (entries[i][0] === 'zip') {
         errors[entries[i][0]] = '';
       }
@@ -153,12 +158,16 @@ export default class App extends React.Component {
         passed = false;
       } else if (entries[i][0] === 'card' && entries[i][1] === '') {
         errors[entries[i][0]] = 'Required';
+        passed = false;
       } else if (entries[i][0] === 'card') {
         errors[entries[i][0]] = '';
       }
 
     }
     this.setState({ errors });
+    if (passed) {
+      alert('Success! Thanks for using my Demo. My contact info is: NJStrebig@gmail.com or 949-422-4472');
+    }
     return passed;
   }
 

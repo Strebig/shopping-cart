@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, NavbarBrand } from 'reactstrap';
+import { NavbarBrand, Navbar } from 'reactstrap';
 
 export default class Header extends React.Component {
 
@@ -9,16 +9,12 @@ export default class Header extends React.Component {
 
   render() {
     return (
-      <Row className='header col-12 no-gutters'>
-        <Col >
-          <h1 className='titleText'>As Seen on T.V.!</h1>
-        </Col>
-        <Col className='col-3 ' >
-          <NavbarBrand href='#' onClick={this.checkOut.bind(this)}>
-            <h1 className='fas fa-shopping-cart cart'>{this.props.cartCount}</h1>
-          </NavbarBrand>
-        </Col>
-      </Row>
+      <Navbar color="dark" dark>
+        <NavbarBrand href="#">AS SEEN ON TV!</NavbarBrand>
+        <NavbarBrand className='fas fa-shopping-cart cart' href='#' onClick={this.checkOut.bind(this)}>
+            x{this.props.cartCount}
+        </NavbarBrand>
+      </Navbar>
     );
   }
 }

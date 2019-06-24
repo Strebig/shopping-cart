@@ -19,7 +19,7 @@ export default class ProductList extends React.Component {
 
     return (
       <Container>
-        <Row className='offset-1'>
+        <Row >
           {product}
         </Row>
       </Container>

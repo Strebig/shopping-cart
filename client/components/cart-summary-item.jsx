@@ -57,13 +57,31 @@ export default class CartSummaryItem extends React.Component {
       return (
         <div key={i}>
           <Row className='cartItems'>
-            <div className="col-12 col-md-6">
-              <img className="card-img-top image-details" src={item.image} alt="Product Image" ></img>
+            <div className="col-12 col-sm-6">
+              <img className="card-img-top image-details col-12" src={item.image} alt="Product Image" ></img>
             </div>
-            <div className="col-12 col-md-6 cartText">
-              <h5 className="card-title"><b>{item.name} x {item.quantity}</b></h5>
-              <h5 className="card-title red" >${(item.price / 100).toFixed(2)}</h5>
+            <div className="col-12 col-sm-6 cartText">
+              <h5 className="card-title"><b>{item.name} x{item.quantity}</b></h5>
+              <h5 className="card-title red" >${(item.price / 100).toFixed(2)} Each</h5>
               <p className="card-text">{item.shortDesc}</p>
+              <p className="card-title"><b>Current Quantity: x{item.quantity}</b></p>
+              <p className="card-title red" >Current Total: ${(item.price * item.quantity / 100).toFixed(2)}</p>
+              <select>
+                <option value="">Update Quantity?</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+              <div>
+                <button className='btn btn-danger cartSummaryButton'>Remove All</button>
+              </div>
             </div>
           </Row>
         </div>
