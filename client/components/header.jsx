@@ -9,7 +9,7 @@ export default class Header extends React.Component {
 
   render() {
     return (
-      <Row className='header col-12'>
+      <Row className='header col-12 no-gutters'>
         <Col >
           <h1 className='titleText'>As Seen on T.V.!</h1>
         </Col>

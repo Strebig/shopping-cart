@@ -3,6 +3,10 @@ import { Row } from 'reactstrap';
 
 export default class CartSummaryItem extends React.Component {
 
+  componentDidMount() {
+    this.getTotalPrice(this.props.cartItem);
+  }
+
   handleSummary(e) {
     this.props.setView('summary', { 'id': this.props.products.id });
   }
@@ -15,12 +19,41 @@ export default class CartSummaryItem extends React.Component {
     this.props.setView('checkout', {});
   }
 
-  render() {
-    let totalPrice = this.props.cartItem;
+  getNewItems(items) {
+    let newItems = [];
+
+    for (var i = 0; i < items.length; i++) {
+      let id = items[i].id;
+      let found = newItems.find(o => o.id === id);
+      if (!found) {
+        newItems.push({ ...items[i], quantity: 1 });
+      } else {
+        let index = newItems.indexOf(found);
+        newItems[index].quantity++;
+      }
+
+    }
+
+    return newItems;
+  }
+
+  getTotalPrice(items) {
+
     let currentPrice = 0;
+
+    for (let item of items) {
+      currentPrice += parseInt(item.price);
+    }
+    const newPrice = currentPrice / 100;
+    this.props.updateTotalPrice(newPrice);
+  }
+
+  render() {
     let finalPrice;
 
-    let items = this.props.cartItem.map((item, i) => {
+    let newItems = this.getNewItems(this.props.cartItem);
+
+    let items = newItems.map((item, i) => {
       return (
         <div key={i}>
           <Row className='cartItems'>
@@ -28,7 +61,7 @@ export default class CartSummaryItem extends React.Component {
               <img className="card-img-top image-details" src={item.image} alt="Product Image" ></img>
             </div>
             <div className="col-12 col-md-6 cartText">
-              <h5 className="card-title"><b>{item.name}</b></h5>
+              <h5 className="card-title"><b>{item.name} x {item.quantity}</b></h5>
               <h5 className="card-title red" >${(item.price / 100).toFixed(2)}</h5>
               <p className="card-text">{item.shortDesc}</p>
             </div>
@@ -38,12 +71,7 @@ export default class CartSummaryItem extends React.Component {
     });
 
     if (this.props.cartItem) {
-      for (let item of totalPrice) {
-        currentPrice += parseInt(item.price);
-      }
-      const newPrice = currentPrice / 100;
-      // this.props.updateTotalPrice(newPrice);
-      finalPrice = <h5 className="card-title red" >Total Cost: ${newPrice.toFixed(2)}</h5>;
+      finalPrice = <h5 className="card-title red" >Total Cost: ${this.props.totalPrice}</h5>;
     } else {
       finalPrice = <h2 className="card-title"><b>There are no items in your cart</b></h2>;
     }
