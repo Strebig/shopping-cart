@@ -63,9 +63,39 @@ export default class App extends React.Component {
     fetch('/api/cart.php', req)
       .then(product => product.json())
       .then(cartItem => {
-        const allCartItems = this.state.cart.concat(cartItem);
+        const allCartItems = this.state.cart.concat({ ...cartItem, quantity: 1 });
         this.setState({ cart: allCartItems });
       });
+  }
+
+  deleteACartItem(e) {
+    let id = e.target.dataset.id;
+    let cart = this.state.cart;
+    let found = cart.find(o => o.id === id);
+    if (found) {
+      let index = cart.indexOf(found);
+      let quantity = found.quantity;
+
+      if (quantity > 1) {
+        found.quantity--;
+        cart[index] = found;
+      } else {
+        cart.splice(index, 1);
+      }
+      this.getTotalPrice(cart);
+      this.setState({ cart });
+    }
+  }
+
+  getTotalPrice(items) {
+
+    let currentPrice = 0;
+
+    for (let item of items) {
+      currentPrice += parseInt(item.price);
+    }
+    const newPrice = currentPrice / 100;
+    this.updateTotalPrice(newPrice);
   }
 
   setView(name, params) {
@@ -83,7 +113,7 @@ export default class App extends React.Component {
 
   placeOrder(info) {
     if (this.verifyFormFields(info)) {
-      let orderInfo = { ...this.state.cart, ...info };
+      let orderInfo = { cart: this.state.cart, ...info };
       const req = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -180,9 +210,9 @@ export default class App extends React.Component {
     } else if (mainView === 'catalog') {
       mainPage = <ProductList products={this.state.products} setView={this.setView} addToCart={this.addToCart}/>;
     } else if (mainView === 'summary') {
-      mainPage = <CartSummaryItem totalPrice={this.state.totalPrice} updateTotalPrice={this.updateTotalPrice} view={this.state.view} setView={this.setView} products={this.state.products} cartItem={this.state.cart}/>;
+      mainPage = <CartSummaryItem delete={this.deleteACartItem.bind(this)} totalPrice={this.state.totalPrice} updateTotalPrice={this.updateTotalPrice} view={this.state.view} setView={this.setView} products={this.state.products} cartItem={this.state.cart}/>;
     } else if (mainView === 'checkout') {
-      mainPage = <Checkout errors={this.state.errors} totalPrice={this.state.totalPrice} placeOrder={this.placeOrder} view={this.state.view} setView={this.setView} products={this.state.products} cartItem={this.state.cart}/>;
+      mainPage = <Checkout delete={this.deleteACartItem.bind(this)} errors={this.state.errors} totalPrice={this.state.totalPrice} placeOrder={this.placeOrder} view={this.state.view} setView={this.setView} products={this.state.products} cartItem={this.state.cart}/>;
     }
     return (
       <div>

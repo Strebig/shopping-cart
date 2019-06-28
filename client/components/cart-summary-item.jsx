@@ -80,7 +80,7 @@ export default class CartSummaryItem extends React.Component {
                 <option value="10">10</option>
               </select>
               <div>
-                <button className='btn btn-danger cartSummaryButton'>Remove All</button>
+                <button onClick={this.props.delete} data-id={item.id} className='btn btn-danger cartSummaryButton'>Remove Item</button>
               </div>
             </div>
           </Row>
