@@ -7,8 +7,17 @@ export default class CartSummaryItem extends React.Component {
     this.getTotalPrice(this.props.cartItem);
   }
 
-  handleSummary(e) {
-    this.props.setView('summary', { 'id': this.props.products.id });
+  handleDetails(e) {
+    let index;
+    let id = e.target.dataset.id;
+    let cart = this.props.cartItem;
+    let product = cart.find(o => o.id === id);
+    if (product) {
+      index = product.id;
+    } else {
+      index = 'id';
+    }
+    this.props.setView('details', { 'id': index, product });
   }
 
   handleView(e) {
@@ -50,9 +59,7 @@ export default class CartSummaryItem extends React.Component {
 
   render() {
     let finalPrice;
-
     let newItems = this.getNewItems(this.props.cartItem);
-
     let items = newItems.map((item, i) => {
       return (
         <div key={i}>
@@ -80,7 +87,8 @@ export default class CartSummaryItem extends React.Component {
                 <option value="10">10</option>
               </select>
               <div>
-                <button onClick={this.props.delete} data-id={item.id} className='btn btn-danger cartSummaryButton'>Remove Item</button>
+                <button onClick={this.handleDetails.bind(this)} data-id={item.id} className="btn btn-warning col-5 cartSummaryButton">Item Summary</button>
+                <button onClick={this.props.delete} data-id={item.id} className='btn btn-danger col-5  cartSummaryButton'>Remove Item</button>
               </div>
             </div>
           </Row>
@@ -88,7 +96,7 @@ export default class CartSummaryItem extends React.Component {
       );
     });
 
-    if (this.props.cartItem) {
+    if (this.props.cartItem.length !== 0) {
       finalPrice = <h5 className="card-title red" >Total Cost: ${this.props.totalPrice}</h5>;
     } else {
       finalPrice = <h2 className="card-title"><b>There are no items in your cart</b></h2>;
@@ -108,7 +116,7 @@ export default class CartSummaryItem extends React.Component {
           {finalPrice}
         </div>
         <div className='checkout'>
-          <button onClick={this.handleCheckout.bind(this)} className="btn-success btn-lg">
+          <button onClick={(this.props.cartItem.length !== 0) ? this.handleCheckout.bind(this) : null} className="btn-success btn-lg">
             Checkout
           </button>
         </div>
