@@ -1,10 +1,23 @@
 import React from 'react';
-import { Row } from 'reactstrap';
+import { Row, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 export default class CartSummaryItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal: false
+    };
+    this.toggle = this.toggle.bind(this);
+  }
 
   componentDidMount() {
     this.getTotalPrice(this.props.cartItem);
+  }
+
+  toggle() {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
   }
 
   handleDetails(e) {
@@ -40,14 +53,11 @@ export default class CartSummaryItem extends React.Component {
         let index = newItems.indexOf(found);
         newItems[index].quantity++;
       }
-
     }
-
     return newItems;
   }
 
   getTotalPrice(items) {
-
     let currentPrice = 0;
 
     for (let item of items) {
@@ -59,6 +69,7 @@ export default class CartSummaryItem extends React.Component {
 
   render() {
     let finalPrice;
+    let checkoutButton;
     let newItems = this.getNewItems(this.props.cartItem);
     let items = newItems.map((item, i) => {
       return (
@@ -88,7 +99,15 @@ export default class CartSummaryItem extends React.Component {
               </select>
               <div>
                 <button onClick={this.handleDetails.bind(this)} data-id={item.id} className="btn btn-warning col-5 cartSummaryButton">Item Summary</button>
-                <button onClick={this.props.delete} data-id={item.id} className='btn btn-danger col-5  cartSummaryButton'>Remove Item</button>
+                <button onClick={this.toggle} data-id={item.id} className='btn btn-danger col-5  cartSummaryButton'>Remove Item</button>
+                <Modal isOpen={this.state.modal} toggle={this.toggle} >
+                  <ModalHeader className="red"><b>Remove 1 {item.name} from Cart</b></ModalHeader>
+                  <ModalBody>Are you sure you want to remove this item?</ModalBody>
+                  <ModalFooter>
+                    <Button color="danger" data-id={item.id} onClick={this.props.delete} toggle={this.toggle}>Remove from Cart</Button>{' '}
+                    <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                  </ModalFooter>
+                </Modal>
               </div>
             </div>
           </Row>
@@ -98,8 +117,13 @@ export default class CartSummaryItem extends React.Component {
 
     if (this.props.cartItem.length !== 0) {
       finalPrice = <h5 className="card-title red" >Total Cost: ${this.props.totalPrice}</h5>;
+      checkoutButton =
+        <button onClick={this.handleCheckout.bind(this)} className="btn-success btn-lg">
+          Checkout
+        </button>;
     } else {
       finalPrice = <h2 className="card-title"><b>There are no items in your cart</b></h2>;
+      checkoutButton = null;
     }
 
     return (
@@ -116,9 +140,7 @@ export default class CartSummaryItem extends React.Component {
           {finalPrice}
         </div>
         <div className='checkout'>
-          <button onClick={(this.props.cartItem.length !== 0) ? this.handleCheckout.bind(this) : null} className="btn-success btn-lg">
-            Checkout
-          </button>
+          {checkoutButton}
         </div>
       </div>
     );
