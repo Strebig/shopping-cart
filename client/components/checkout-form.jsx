@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row } from 'reactstrap'
+import { Row } from 'reactstrap';
 
 export default class Checkout extends React.Component {
 
@@ -34,7 +34,7 @@ export default class Checkout extends React.Component {
       <div className="container ">
         <Row>
           <div className="col-md-12 text-center">
-              <button className="btn catalog-btn" onClick={this.handleView.bind(this)}>Back to Catalog</button>
+            <button className="btn catalog-btn" onClick={this.handleView.bind(this)}>Back to Catalog</button>
           </div>
         </Row>
         <h3 className='red text-center'><b>***FOR DEMO PURPOSES ONLY***</b></h3>

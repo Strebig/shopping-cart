@@ -6,7 +6,7 @@ export default class ProductDetails extends React.Component {
     super(props);
     this.state = {
       quantity: 1
-    }
+    };
     this.handleView = this.handleView.bind(this);
     this.handleCart = this.handleCart.bind(this);
   }
@@ -21,7 +21,7 @@ export default class ProductDetails extends React.Component {
 
   handleQuantityChange(event) {
     var quantity = event.target.value;
-    this.setState({quantity: quantity})
+    this.setState({ quantity: quantity });
   }
 
   render() {
@@ -29,7 +29,7 @@ export default class ProductDetails extends React.Component {
       <Container fluid className='text-center' >
         <Row>
           <div className="col-md-12 text-center">
-              <button className="btn catalog-btn" onClick={this.handleView}>Back to Catalog</button>
+            <button className="btn catalog-btn" onClick={this.handleView}>Back to Catalog</button>
           </div>
         </Row>
         <Row>
@@ -41,10 +41,10 @@ export default class ProductDetails extends React.Component {
             <h5 className="card-title red" >${(this.props.params.product.price / 100).toFixed(2)}</h5>
             <p className="card-text">{this.props.params.product.shortDesc}</p>
             <p className="card-title"><b>Quantity: <span><i className="fas fa-times fa-sm mr-1"></i></span>
-                    <input name="quantity" value={this.state.quantity} onChange={this.handleQuantityChange.bind(this)} >
-                      
-                    </input>
-                    </b></p>
+              <input name="quantity" value={this.state.quantity} onChange={this.handleQuantityChange.bind(this)} >
+
+              </input>
+            </b></p>
             <button className="btn details-add-btn" onClick={this.handleCart}>Add to Cart </button>
             <p className="card-text card-text-long">{this.props.params.product.longDesc}</p>
           </div>

@@ -62,11 +62,11 @@ export default class App extends React.Component {
   setActiveItem(event) {
     event.preventDefault();
     let id = event.currentTarget.dataset.id;
-    let item = this.state.cart.find( o => o.id == id)
+    let item = this.state.cart.find(o => o.id == id);
     this.setState({
       activeItem: item,
       modal: true
-    })
+    });
   }
 
   getProducts() {
@@ -90,13 +90,13 @@ export default class App extends React.Component {
     const req = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({...product, quantity})
+      body: JSON.stringify({ ...product, quantity })
     };
     fetch('/api/cart.php', req)
       .then(product => product.json())
       .then(cartItem => {
-        let found = this.state.cart.find( o => o.id == cartItem.id);
-        if(found) {
+        let found = this.state.cart.find(o => o.id == cartItem.id);
+        if (found) {
           let index = this.state.cart.indexOf(found);
           let quantity = parseInt(cartItem.quantity);
           let newQuantity = quantity += parseInt(found.quantity);
@@ -104,8 +104,7 @@ export default class App extends React.Component {
           let cart = this.state.cart;
           cart[index] = found;
           this.setState({ cart });
-        }
-        else {
+        } else {
           const allCartItems = this.state.cart.concat(cartItem);
           this.setState({ cart: allCartItems });
         }
@@ -117,7 +116,7 @@ export default class App extends React.Component {
     let item = cart[index];
     item.quantity = quantity;
     cart[index] = item;
-    this.setState({ cart }, () => this.getTotalPrice(cart))
+    this.setState({ cart }, () => this.getTotalPrice(cart));
   }
 
   deleteACartItem(e) {
@@ -161,30 +160,30 @@ export default class App extends React.Component {
   }
 
   placeOrder(info) {
-      if (this.verifyFormFields(info)) {
+    if (this.verifyFormFields(info)) {
       let orderInfo = { cart: this.state.cart, ...info };
       const req = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderInfo)
-      }
+      };
       fetch('/api/checkout.php', req)
-        .then(order => order.json())
-        this.setState({
-            view: {
-              name: 'catalog',
-              params: {}
-            },
-            cart: [],
-            didCheckout: true
-          });
-      }
+        .then(order => order.json());
+      this.setState({
+        view: {
+          name: 'catalog',
+          params: {}
+        },
+        cart: [],
+        didCheckout: true
+      });
+    }
   }
 
-  calculateQuantity( items ) {
+  calculateQuantity(items) {
     let total = 0;
     let length = items.length;
-    for(let i = 0; i < length; i++) {
+    for (let i = 0; i < length; i++) {
       total += parseInt(items[i].quantity);
     }
     return total;
@@ -272,19 +271,19 @@ export default class App extends React.Component {
       <div>
         <Header params={this.state.view.params} setView={this.setView} cartCount={this.calculateQuantity(this.state.cart)}/>
         <Modal isOpen={this.state.didCheckout} toggle={this.toggleSuccess} id="success-modal" centered>
-            <ModalHeader>
-              <b>You successfully submitted your order!</b>
-            </ModalHeader>
-            <ModalBody >
-              <h4>Contact Information</h4>
-              <p>Name: Nick Strebig</p>
-              <p>Phone: 949-422-4472</p>
-              <p>Email: strebig.nick@gmail.com</p>
-            </ModalBody>
-            <ModalFooter>
-              <Button color="outline-secondary" className="button-format text-center" onClick={this.toggleSuccess}>Ok, got it!</Button>
-            </ModalFooter>
-          </Modal>
+          <ModalHeader>
+            <b>You successfully submitted your order!</b>
+          </ModalHeader>
+          <ModalBody >
+            <h4>Contact Information</h4>
+            <p>Name: Nick Strebig</p>
+            <p>Phone: 949-422-4472</p>
+            <p>Email: strebig.nick@gmail.com</p>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="outline-secondary" className="button-format text-center" onClick={this.toggleSuccess}>Ok, got it!</Button>
+          </ModalFooter>
+        </Modal>
         {mainPage}
         <Footer />
       </div>

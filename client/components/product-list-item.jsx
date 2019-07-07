@@ -5,7 +5,7 @@ export default class ProductListItem extends React.Component {
     super(props);
     this.state = {
       quantity: ''
-    }
+    };
     this.handleView = this.handleView.bind(this);
     this.handleCart = this.handleCart.bind(this);
   }
@@ -16,7 +16,7 @@ export default class ProductListItem extends React.Component {
 
   handleCart(e) {
     this.props.addToCart(this.props.product, this.state.quantity);
-    this.setState({quantity: 0})
+    this.setState({ quantity: 0 });
   }
 
   handleInputChange(event) {
@@ -24,7 +24,7 @@ export default class ProductListItem extends React.Component {
     var name = event.target.name;
     this.setState({
       [name]: value
-    })
+    });
   }
 
   render() {

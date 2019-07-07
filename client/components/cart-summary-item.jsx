@@ -38,7 +38,7 @@ export default class CartSummaryItem extends React.Component {
     let currentPrice = 0;
 
     for (let item of items) {
-      currentPrice += ( parseInt(item.price) * item.quantity);
+      currentPrice += (parseInt(item.price) * item.quantity);
     }
     const newPrice = currentPrice / 100;
     this.props.updateTotalPrice(newPrice);
@@ -53,7 +53,7 @@ export default class CartSummaryItem extends React.Component {
   render() {
     let finalPrice;
     let checkoutButton;
-    
+
     if (this.props.cart.length !== 0) {
       finalPrice = <h5 className="card-title red" >Total Cost: ${this.props.totalPrice}</h5>;
       checkoutButton =
@@ -69,7 +69,7 @@ export default class CartSummaryItem extends React.Component {
       <div className="container text-center" >
         <Row>
           <div className="col-md-12 text-center">
-              <button className="btn catalog-btn" onClick={this.handleView.bind(this)}>Back to Catalog</button>
+            <button className="btn catalog-btn" onClick={this.handleView.bind(this)}>Back to Catalog</button>
           </div>
         </Row>
         <Modal isOpen={this.props.modal} toggle={this.props.toggle} id="delete-modal" centered>
@@ -93,18 +93,18 @@ export default class CartSummaryItem extends React.Component {
                     <h5 className="card-title red" >${(item.price / 100).toFixed(2)} Each</h5>
                     <p className="card-text">{item.shortDesc}</p>
                     <p className="card-title"><b>Quantity: <span><i className="fas fa-times fa-sm mr-1"></i></span>
-                    <select name="quantity" value={item.quantity} onChange={this.handleQuantityChange.bind(this)} data-index={i}>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                    </select>
+                      <select name="quantity" value={item.quantity} onChange={this.handleQuantityChange.bind(this)} data-index={i}>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                      </select>
                     </b></p>
                     <p className="card-title red" >Current Total: ${(item.price * item.quantity / 100).toFixed(2)}</p>
                     <div className="mb-4">
