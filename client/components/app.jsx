@@ -1,9 +1,11 @@
 import React from 'react';
 import Header from './header';
+import Footer from './Footer';
 import ProductList from './product-list';
 import ProductDetails from './product-details';
 import CartSummaryItem from './cart-summary-item';
 import Checkout from './checkout-form';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -16,6 +18,9 @@ export default class App extends React.Component {
       },
       totalPrice: 0,
       cart: [],
+      activeItem: {},
+      modal: false,
+      didCheckout: false,
       errors: {
         fullName: '',
         address: '',
@@ -28,14 +33,40 @@ export default class App extends React.Component {
     this.getProducts = this.getProducts.bind(this);
     this.getCartItems = this.getCartItems.bind(this);
     this.addToCart = this.addToCart.bind(this);
+    this.updateCart = this.updateCart.bind(this);
     this.setView = this.setView.bind(this);
     this.placeOrder = this.placeOrder.bind(this);
     this.updateTotalPrice = this.updateTotalPrice.bind(this);
+    this.toggle = this.toggle.bind(this);
+    this.setActiveItem = this.setActiveItem.bind(this);
+    this.toggleSuccess = this.toggleSuccess.bind(this);
   }
 
   componentDidMount() {
     this.getProducts();
     this.getCartItems();
+  }
+
+  toggle() {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
+  }
+
+  toggleSuccess() {
+    this.setState(prevState => ({
+      didCheckout: !prevState.didCheckout
+    }));
+  }
+
+  setActiveItem(event) {
+    event.preventDefault();
+    let id = event.currentTarget.dataset.id;
+    let item = this.state.cart.find( o => o.id == id)
+    this.setState({
+      activeItem: item,
+      modal: true
+    })
   }
 
   getProducts() {
@@ -54,18 +85,39 @@ export default class App extends React.Component {
       });
   }
 
-  addToCart(product) {
+  addToCart(product, quantity) {
+    quantity == '' ? quantity = 1 : quantity;
     const req = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(product)
+      body: JSON.stringify({...product, quantity})
     };
     fetch('/api/cart.php', req)
       .then(product => product.json())
       .then(cartItem => {
-        const allCartItems = this.state.cart.concat({ ...cartItem, quantity: 1 });
-        this.setState({ cart: allCartItems });
+        let found = this.state.cart.find( o => o.id == cartItem.id);
+        if(found) {
+          let index = this.state.cart.indexOf(found);
+          let quantity = parseInt(cartItem.quantity);
+          let newQuantity = quantity += parseInt(found.quantity);
+          found.quantity = newQuantity;
+          let cart = this.state.cart;
+          cart[index] = found;
+          this.setState({ cart });
+        }
+        else {
+          const allCartItems = this.state.cart.concat(cartItem);
+          this.setState({ cart: allCartItems });
+        }
       });
+  }
+
+  updateCart(index, quantity) {
+    let cart = this.state.cart;
+    let item = cart[index];
+    item.quantity = quantity;
+    cart[index] = item;
+    this.setState({ cart }, () => this.getTotalPrice(cart))
   }
 
   deleteACartItem(e) {
@@ -74,7 +126,7 @@ export default class App extends React.Component {
     let found = cart.find(o => o.id === id);
     if (found) {
       let index = cart.indexOf(found);
-      let quantity = found.quantity;
+      let quantity = parseInt(found.quantity);
 
       if (quantity > 1) {
         found.quantity--;
@@ -82,17 +134,14 @@ export default class App extends React.Component {
       } else {
         cart.splice(index, 1);
       }
-      this.getTotalPrice(cart);
-      this.setState({ cart });
+      this.setState({ cart, modal: false }, () => this.getTotalPrice(cart));
     }
   }
 
   getTotalPrice(items) {
-
     let currentPrice = 0;
-
     for (let item of items) {
-      currentPrice += parseInt(item.price);
+      currentPrice += (parseFloat(item.price) * parseInt(item.quantity));
     }
     const newPrice = currentPrice / 100;
     this.updateTotalPrice(newPrice);
@@ -112,25 +161,33 @@ export default class App extends React.Component {
   }
 
   placeOrder(info) {
-    if (this.verifyFormFields(info)) {
+      if (this.verifyFormFields(info)) {
       let orderInfo = { cart: this.state.cart, ...info };
       const req = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderInfo)
-      };
+      }
       fetch('/api/checkout.php', req)
         .then(order => order.json())
-        .then(checkout => {
-          this.setState({
+        this.setState({
             view: {
               name: 'catalog',
               params: {}
             },
-            cart: []
+            cart: [],
+            didCheckout: true
           });
-        });
+      }
+  }
+
+  calculateQuantity( items ) {
+    let total = 0;
+    let length = items.length;
+    for(let i = 0; i < length; i++) {
+      total += parseInt(items[i].quantity);
     }
+    return total;
   }
 
   verifyFormFields(user) {
@@ -195,9 +252,6 @@ export default class App extends React.Component {
 
     }
     this.setState({ errors });
-    if (passed) {
-      alert('Success! Thanks for using my Demo. My contact info is: NJStrebig@gmail.com or 949-422-4472');
-    }
     return passed;
   }
 
@@ -206,18 +260,33 @@ export default class App extends React.Component {
     let mainPage;
 
     if (mainView === 'details') {
-      mainPage = <ProductDetails product={this.state.products} view={this.state.view} params={this.state.view.params} setView={this.setView} addToCart={this.addToCart}/>;
+      mainPage = <ProductDetails updateCart={this.updateCart} product={this.state.products} view={this.state.view} params={this.state.view.params} setView={this.setView} addToCart={this.addToCart}/>;
     } else if (mainView === 'catalog') {
       mainPage = <ProductList products={this.state.products} setView={this.setView} addToCart={this.addToCart}/>;
     } else if (mainView === 'summary') {
-      mainPage = <CartSummaryItem delete={this.deleteACartItem.bind(this)} totalPrice={this.state.totalPrice} updateTotalPrice={this.updateTotalPrice} view={this.state.view} setView={this.setView} products={this.state.products} cartItem={this.state.cart}/>;
+      mainPage = <CartSummaryItem delete={this.deleteACartItem.bind(this)} modal={this.state.modal} activeItem={this.state.activeItem} toggle={this.toggle} setActiveItem={this.setActiveItem} updateCart={this.updateCart} totalPrice={this.state.totalPrice} updateTotalPrice={this.updateTotalPrice} view={this.state.view} setView={this.setView} products={this.state.products} cart={this.state.cart}/>;
     } else if (mainView === 'checkout') {
       mainPage = <Checkout delete={this.deleteACartItem.bind(this)} errors={this.state.errors} totalPrice={this.state.totalPrice} placeOrder={this.placeOrder} view={this.state.view} setView={this.setView} products={this.state.products} cartItem={this.state.cart}/>;
     }
     return (
       <div>
-        <Header params={this.state.view.params} setView={this.setView} cartCount={this.state.cart.length}/>
+        <Header params={this.state.view.params} setView={this.setView} cartCount={this.calculateQuantity(this.state.cart)}/>
+        <Modal isOpen={this.state.didCheckout} toggle={this.toggleSuccess} id="success-modal" centered>
+            <ModalHeader>
+              <b>You successfully submitted your order!</b>
+            </ModalHeader>
+            <ModalBody >
+              <h4>Contact Information</h4>
+              <p>Name: Nick Strebig</p>
+              <p>Phone: 949-422-4472</p>
+              <p>Email: strebig.nick@gmail.com</p>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="outline-secondary" className="button-format text-center" onClick={this.toggleSuccess}>Ok, got it!</Button>
+            </ModalFooter>
+          </Modal>
         {mainPage}
+        <Footer />
       </div>
     );
   }

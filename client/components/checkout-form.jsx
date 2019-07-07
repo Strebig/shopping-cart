@@ -1,4 +1,5 @@
 import React from 'react';
+import { Row } from 'reactstrap'
 
 export default class Checkout extends React.Component {
 
@@ -31,13 +32,11 @@ export default class Checkout extends React.Component {
   render() {
     return (
       <div className="container ">
-        <div className="card-header">
-          <ul className="nav nav-pills card-header-pills">
-            <li className="nav-item">
-              <a className="nav-link active" href='#' onClick={this.handleView.bind(this)}>Back to Catalog</a>
-            </li>
-          </ul>
-        </div>
+        <Row>
+          <div className="col-md-12 text-center">
+              <button className="btn catalog-btn" onClick={this.handleView.bind(this)}>Back to Catalog</button>
+          </div>
+        </Row>
         <h3 className='red text-center'><b>***FOR DEMO PURPOSES ONLY***</b></h3>
         <div className="checkoutForm">
           <div className="row">
@@ -166,7 +165,7 @@ export default class Checkout extends React.Component {
               <h4 className='red text-center'><b>Your Total Cost is: ${this.props.totalPrice}</b></h4>
             </div>
             <div className="col-12 form-group text-center">
-              <button className="btn btn-success placeOrder" onClick={e => this.props.placeOrder(this.state.user)} >Place Order</button>
+              <button className="btn btn-success button-format" onClick={e => this.props.placeOrder(this.state.user)} >Place Order</button>
             </div>
           </div>
         </div>

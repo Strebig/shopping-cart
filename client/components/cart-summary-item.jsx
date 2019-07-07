@@ -5,25 +5,18 @@ export default class CartSummaryItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false
+      newItems: []
     };
-    this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount() {
-    this.getTotalPrice(this.props.cartItem);
-  }
-
-  toggle() {
-    this.setState(prevState => ({
-      modal: !prevState.modal
-    }));
+    this.getTotalPrice(this.props.cart);
   }
 
   handleDetails(e) {
     let index;
     let id = e.target.dataset.id;
-    let cart = this.props.cartItem;
+    let cart = this.props.cart;
     let product = cart.find(o => o.id === id);
     if (product) {
       index = product.id;
@@ -41,84 +34,30 @@ export default class CartSummaryItem extends React.Component {
     this.props.setView('checkout', {});
   }
 
-  getNewItems(items) {
-    let newItems = [];
-
-    for (var i = 0; i < items.length; i++) {
-      let id = items[i].id;
-      let found = newItems.find(o => o.id === id);
-      if (!found) {
-        newItems.push({ ...items[i], quantity: 1 });
-      } else {
-        let index = newItems.indexOf(found);
-        newItems[index].quantity++;
-      }
-    }
-    return newItems;
-  }
-
   getTotalPrice(items) {
     let currentPrice = 0;
 
     for (let item of items) {
-      currentPrice += parseInt(item.price);
+      currentPrice += ( parseInt(item.price) * item.quantity);
     }
     const newPrice = currentPrice / 100;
     this.props.updateTotalPrice(newPrice);
   }
 
+  handleQuantityChange(event) {
+    var index = event.currentTarget.dataset.index;
+    var quantity = event.target.value;
+    this.props.updateCart(index, quantity);
+  }
+
   render() {
     let finalPrice;
     let checkoutButton;
-    let newItems = this.getNewItems(this.props.cartItem);
-    let items = newItems.map((item, i) => {
-      return (
-        <div key={i}>
-          <Row className='cartItems'>
-            <div className="col-12 col-sm-6">
-              <img className="card-img-top image-details col-12" src={item.image} alt="Product Image" ></img>
-            </div>
-            <div className="col-12 col-sm-6 cartText">
-              <h5 className="card-title"><b>{item.name} x{item.quantity}</b></h5>
-              <h5 className="card-title red" >${(item.price / 100).toFixed(2)} Each</h5>
-              <p className="card-text">{item.shortDesc}</p>
-              <p className="card-title"><b>Current Quantity: x{item.quantity}</b></p>
-              <p className="card-title red" >Current Total: ${(item.price * item.quantity / 100).toFixed(2)}</p>
-              <select>
-                <option value="">Update Quantity?</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-              </select>
-              <div>
-                <button onClick={this.handleDetails.bind(this)} data-id={item.id} className="btn btn-warning col-5 cartSummaryButton">Item Summary</button>
-                <button onClick={this.toggle} data-id={item.id} className='btn btn-danger col-5  cartSummaryButton'>Remove Item</button>
-                <Modal isOpen={this.state.modal} toggle={this.toggle} >
-                  <ModalHeader className="red"><b>Remove 1 {item.name} from Cart</b></ModalHeader>
-                  <ModalBody>Are you sure you want to remove this item?</ModalBody>
-                  <ModalFooter>
-                    <Button color="danger" data-id={item.id} onClick={this.props.delete} toggle={this.toggle}>Remove from Cart</Button>{' '}
-                    <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                  </ModalFooter>
-                </Modal>
-              </div>
-            </div>
-          </Row>
-        </div>
-      );
-    });
-
-    if (this.props.cartItem.length !== 0) {
+    
+    if (this.props.cart.length !== 0) {
       finalPrice = <h5 className="card-title red" >Total Cost: ${this.props.totalPrice}</h5>;
       checkoutButton =
-        <button onClick={this.handleCheckout.bind(this)} className="btn-success btn-lg">
+        <button onClick={this.handleCheckout.bind(this)} className="btn-dark btn-lg button-format mb-4">
           Checkout
         </button>;
     } else {
@@ -128,14 +67,56 @@ export default class CartSummaryItem extends React.Component {
 
     return (
       <div className="container text-center" >
-        <div className="card-header">
-          <ul className="nav nav-pills card-header-pills">
-            <li className="nav-item">
-              <a className="nav-link active" href='#' onClick={this.handleView.bind(this)}>Back to Catalog</a>
-            </li>
-          </ul>
-        </div>
-        {items}
+        <Row>
+          <div className="col-md-12 text-center">
+              <button className="btn catalog-btn" onClick={this.handleView.bind(this)}>Back to Catalog</button>
+          </div>
+        </Row>
+        <Modal isOpen={this.props.modal} toggle={this.props.toggle} id="delete-modal" centered>
+          <ModalHeader className="red"><b>Remove 1 {this.props.activeItem.name} from Cart (x{this.props.activeItem.quantity})</b></ModalHeader>
+          <ModalBody >Are you sure you want to remove this item?</ModalBody>
+          <ModalFooter>
+            <Button color="danger" className="button-format" data-id={this.props.activeItem.id} onClick={this.props.delete} >Remove from Cart</Button>{' '}
+            <Button color="outline-secondary" className="button-format" onClick={this.props.toggle}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+        {
+          this.props.cart.map((item, i) => {
+            return (
+              <div key={i}>
+                <Row className='cartItems'>
+                  <div className="col-12 col-md-6">
+                    <img className="card-img-top image-details img-fluid" src={item.image} alt="Product Image" ></img>
+                  </div>
+                  <div className="col-12 col-md-6 cartText">
+                    <h5 className="card-title"><b>{item.name}</b></h5>
+                    <h5 className="card-title red" >${(item.price / 100).toFixed(2)} Each</h5>
+                    <p className="card-text">{item.shortDesc}</p>
+                    <p className="card-title"><b>Quantity: <span><i className="fas fa-times fa-sm mr-1"></i></span>
+                    <select name="quantity" value={item.quantity} onChange={this.handleQuantityChange.bind(this)} data-index={i}>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                    </select>
+                    </b></p>
+                    <p className="card-title red" >Current Total: ${(item.price * item.quantity / 100).toFixed(2)}</p>
+                    <div className="mb-4">
+                      <button onClick={this.handleDetails.bind(this)} data-id={item.id} className="btn mainProductButton blue cartSummaryButton">Details</button>
+                      <button onClick={this.toggle} data-id={item.id} onClick={this.props.setActiveItem} className='btn cartSummaryButton cartDeleteButton'>Delete</button>
+                    </div>
+                  </div>
+                </Row>
+              </div>
+            );
+          })
+        }
         <div className='checkoutPrice'>
           {finalPrice}
         </div>
