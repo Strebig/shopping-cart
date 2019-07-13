@@ -115,12 +115,20 @@ export default class App extends React.Component {
     let cart = this.state.cart;
     let item = cart[index];
     item.quantity = quantity;
+    if (item.quantity < 1) {
+      item.quantity = 0;
+    }
     cart[index] = item;
     this.setState({ cart }, () => this.getTotalPrice(cart));
   }
 
   deleteACartItem(e) {
-    let id = e.target.dataset.id;
+    let id;
+    if (e.target) {
+      id = e.target.dataset.id;
+    } else {
+      id = e.id;
+    }
     let cart = this.state.cart;
     let found = cart.find(o => o.id === id);
     if (found) {
@@ -230,8 +238,8 @@ export default class App extends React.Component {
       } else if (entries[i][0] === 'state') {
         errors[entries[i][0]] = '';
       }
-      if (entries[i][0] === 'zip' && entries[i][1].length > 5) {
-        errors[entries[i][0]] = 'Zip code exceed maximum length';
+      if (entries[i][0] === 'zip' && entries[i][1].length !== 5) {
+        errors[entries[i][0]] = 'Zip code must be 5 digits';
         passed = false;
       } else if (entries[i][0] === 'zip' && entries[i][1] === '') {
         errors[entries[i][0]] = 'Required';
@@ -272,10 +280,10 @@ export default class App extends React.Component {
         <Header params={this.state.view.params} setView={this.setView} cartCount={this.calculateQuantity(this.state.cart)}/>
         <Modal isOpen={this.state.didCheckout} toggle={this.toggleSuccess} id="success-modal" centered>
           <ModalHeader>
-            <b>You successfully submitted your order!</b>
+            <b>You've successfully submitted your order!</b>
           </ModalHeader>
           <ModalBody >
-            <h4>Contact Information</h4>
+            <h4>Thanks for using this Demo, and please feel free to contact me here: </h4>
             <p>Name: Nick Strebig</p>
             <p>Phone: 949-422-4472</p>
             <p>Email: strebig.nick@gmail.com</p>

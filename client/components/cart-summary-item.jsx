@@ -82,6 +82,13 @@ export default class CartSummaryItem extends React.Component {
         </Modal>
         {
           this.props.cart.map((item, i) => {
+            if (item.quantity < 1) {
+              item.quantity = 0;
+              let activeItem = item;
+              this.props.delete(activeItem);
+              finalPrice = <h2 className="card-title"><b>There are no items in your cart</b></h2>;
+              checkoutButton = null;
+            }
             return (
               <div key={i}>
                 <Row className='cartItems'>
@@ -93,18 +100,8 @@ export default class CartSummaryItem extends React.Component {
                     <h5 className="card-title red" >${(item.price / 100).toFixed(2)} Each</h5>
                     <p className="card-text">{item.shortDesc}</p>
                     <p className="card-title"><b>Quantity: <span><i className="fas fa-times fa-sm mr-1"></i></span>
-                      <select name="quantity" value={item.quantity} onChange={this.handleQuantityChange.bind(this)} data-index={i}>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                      </select>
+                      <input type="number" name="quantity" value={item.quantity} onChange={this.handleQuantityChange.bind(this)} data-index={i}>
+                      </input>
                     </b></p>
                     <p className="card-title red" >Current Total: ${(item.price * item.quantity / 100).toFixed(2)}</p>
                     <div className="mb-4">
