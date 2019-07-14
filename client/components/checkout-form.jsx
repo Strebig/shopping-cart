@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row } from 'reactstrap';
+import { EventEmitter } from 'events';
 
 export default class Checkout extends React.Component {
 
@@ -22,6 +23,7 @@ export default class Checkout extends React.Component {
     var value = event.target.value;
     var user = this.state.user;
     user[name] = value;
+    this.props.verify(user);
     this.setState({ user });
   }
 

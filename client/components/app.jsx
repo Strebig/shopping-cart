@@ -196,6 +196,51 @@ export default class App extends React.Component {
     }
     return total;
   }
+  verifyOneFormField(user) {
+    var errors = this.state.errors;
+    var entries = Object.entries(user);
+    var passed = true;
+    for (var i = 0; i < entries.length; i++) {
+      if (entries[i][0] === 'fullName' && entries[i][1].length > 30 && entries[i][1] !== '') {
+        errors[entries[i][0]] = 'Name exceed maximum length';
+        passed = false;
+      } else if (entries[i][0] === 'fullName') {
+        errors[entries[i][0]] = '';
+      }
+      if (entries[i][0] === 'address' && entries[i][1].length > 40 && entries[i][1] !== '') {
+        errors[entries[i][0]] = 'Address exceed maximum length';
+        passed = false;
+      } else if (entries[i][0] === 'address') {
+        errors[entries[i][0]] = '';
+      }
+      if (entries[i][0] === 'city' && entries[i][1].length > 20 && entries[i][1] !== '') {
+        errors[entries[i][0]] = 'City exceed maximum length';
+        passed = false;
+      } else if (entries[i][0] === 'city') {
+        errors[entries[i][0]] = '';
+      }
+      if (entries[i][0] === 'state' && entries[i][1].length > 2 && entries[i][1] !== '') {
+        errors[entries[i][0]] = 'State exceed maximum length';
+        passed = false;
+      } else if (entries[i][0] === 'state') {
+        errors[entries[i][0]] = '';
+      }
+      if (entries[i][0] === 'zip' && entries[i][1].length !== 5 && entries[i][1] !== '') {
+        errors[entries[i][0]] = 'Zip code must be 5 digits';
+        passed = false;
+      } else if (entries[i][0] === 'zip') {
+        errors[entries[i][0]] = '';
+      }
+      if (entries[i][0] === 'card' && entries[i][1].length !== 16 && entries[i][1] !== '') {
+        errors[entries[i][0]] = 'Credit card must be 16 digits.';
+        passed = false;
+      } else if (entries[i][0] === 'card') {
+        errors[entries[i][0]] = '';
+      }
+    }
+    this.setState({ errors });
+    return passed;
+  }
 
   verifyFormFields(user) {
     var errors = this.state.errors;
@@ -269,11 +314,11 @@ export default class App extends React.Component {
     if (mainView === 'details') {
       mainPage = <ProductDetails updateCart={this.updateCart} product={this.state.products} view={this.state.view} params={this.state.view.params} setView={this.setView} addToCart={this.addToCart}/>;
     } else if (mainView === 'catalog') {
-      mainPage = <ProductList products={this.state.products} setView={this.setView} addToCart={this.addToCart}/>;
+      mainPage = <ProductList params={this.state.view.params} setView={this.setView} products={this.state.products} addToCart={this.addToCart}/>;
     } else if (mainView === 'summary') {
       mainPage = <CartSummaryItem delete={this.deleteACartItem.bind(this)} modal={this.state.modal} activeItem={this.state.activeItem} toggle={this.toggle} setActiveItem={this.setActiveItem} updateCart={this.updateCart} totalPrice={this.state.totalPrice} updateTotalPrice={this.updateTotalPrice} view={this.state.view} setView={this.setView} products={this.state.products} cart={this.state.cart}/>;
     } else if (mainView === 'checkout') {
-      mainPage = <Checkout delete={this.deleteACartItem.bind(this)} errors={this.state.errors} totalPrice={this.state.totalPrice} placeOrder={this.placeOrder} view={this.state.view} setView={this.setView} products={this.state.products} cartItem={this.state.cart}/>;
+      mainPage = <Checkout verify={this.verifyOneFormField.bind(this)} delete={this.deleteACartItem.bind(this)} errors={this.state.errors} totalPrice={this.state.totalPrice} placeOrder={this.placeOrder} view={this.state.view} setView={this.setView} products={this.state.products} cartItem={this.state.cart}/>;
     }
     return (
       <div>
@@ -283,7 +328,7 @@ export default class App extends React.Component {
             <b>You've successfully submitted your order!</b>
           </ModalHeader>
           <ModalBody >
-            <h4>Thanks for using this Demo, and please feel free to contact me here: </h4>
+            <h4 className="text-center">Thanks for using this Demo, and please feel free to contact me here: </h4>
             <p>Name: Nick Strebig</p>
             <p>Phone: 949-422-4472</p>
             <p>Email: strebig.nick@gmail.com</p>

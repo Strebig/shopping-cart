@@ -20,6 +20,10 @@ export default class ProductListItem extends React.Component {
     }));
   }
 
+  checkOut(e) {
+    this.props.setView('summary', {});
+  }
+
   handleView(e) {
     this.props.setView('details', { 'id': this.props.product.id, 'product': this.props.product });
   }
@@ -40,16 +44,17 @@ export default class ProductListItem extends React.Component {
 
   render() {
     return (
-      
+
       <div className="card-deck mainProducts col-md-6 col-lg-4 ">
-        <Modal isOpen={this.state.didAddItemToCart} toggle={this.toggleSuccess} id="success-modal" centered>
+        <Modal isOpen={this.state.didAddItemToCart} id="success-modal" centered>
           <ModalHeader>
             <b>You're cart has been updated!</b>
           </ModalHeader>
           <ModalBody >
-            <h4>You've successfully added {this.props.product.name} to your Cart!</h4>
+            <h4 className="text-center">You've successfully added {this.props.product.name} to your Cart!</h4>
           </ModalBody>
           <ModalFooter>
+            <Button color="primary" className="button-format text-center" onClick={this.checkOut.bind(this)}>Go to Cart</Button>
             <Button color="outline-secondary" className="button-format text-center" onClick={this.toggleSuccess}>Continue Shopping</Button>
           </ModalFooter>
         </Modal>
