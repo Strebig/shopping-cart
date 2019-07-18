@@ -31,12 +31,15 @@ export default class ProductListItem extends React.Component {
   handleCart(e) {
     this.props.addToCart(this.props.product, this.state.quantity);
     this.toggleSuccess();
-    this.setState({ quantity: 0 });
+    this.setState({ quantity: 1 });
   }
 
   handleInputChange(event) {
     var value = event.target.value;
     var name = event.target.name;
+    if (value < 1) {
+      value = 1;
+    }
     this.setState({
       [name]: value
     });

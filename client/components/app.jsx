@@ -116,7 +116,7 @@ export default class App extends React.Component {
     let item = cart[index];
     item.quantity = quantity;
     if (item.quantity < 1) {
-      item.quantity = 0;
+      item.quantity = 1;
     }
     cart[index] = item;
     this.setState({ cart }, () => this.getTotalPrice(cart));

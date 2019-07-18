@@ -1,14 +1,26 @@
 import React from 'react';
-import { Container, Row } from 'reactstrap';
+import { Container, Row, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 export default class ProductDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      quantity: 1
+      quantity: 1,
+      didAddItemToCart: false
     };
     this.handleView = this.handleView.bind(this);
     this.handleCart = this.handleCart.bind(this);
+    this.toggleSuccess = this.toggleSuccess.bind(this);
+  }
+
+  toggleSuccess() {
+    this.setState(prevState => ({
+      didAddItemToCart: !prevState.didAddItemToCart
+    }));
+  }
+
+  checkOut(e) {
+    this.props.setView('summary', {});
   }
 
   handleView(e) {
@@ -17,6 +29,7 @@ export default class ProductDetails extends React.Component {
 
   handleCart(e) {
     this.props.addToCart(this.props.params.product, this.state.quantity);
+    this.toggleSuccess();
   }
 
   handleQuantityChange(event) {
@@ -27,6 +40,18 @@ export default class ProductDetails extends React.Component {
   render() {
     return (
       <Container fluid className='text-center' >
+         <Modal isOpen={this.state.didAddItemToCart} id="success-modal" centered>
+          <ModalHeader>
+            <b>You're cart has been updated!</b>
+          </ModalHeader>
+          <ModalBody >
+            <h4 className="text-center">You've successfully added {this.props.params.product.name} to your Cart!</h4>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" className="button-format text-center" onClick={this.checkOut.bind(this)}>Go to Cart</Button>
+            <Button color="outline-secondary" className="button-format text-center" onClick={this.toggleSuccess}>Continue Shopping</Button>
+          </ModalFooter>
+        </Modal>
         <Row>
           <div className="col-md-12 text-center">
             <button className="btn catalog-btn" onClick={this.handleView}>Back to Catalog</button>
