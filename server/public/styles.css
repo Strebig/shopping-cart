@@ -1,9 +1,6 @@
 body{
     height: 100%;
     padding-bottom: 70px;
-}
-
-#root {
     background-image: url('/uploads/dust_scratches.png')
 }
 
@@ -35,9 +32,6 @@ body{
     border-width: 1px;
     border-left: solid rgb(65, 206, 253) 30px;
 }
-/* .detailView{
-    margin-top: 60px;
-} */
 .cartText{
     margin-top: 15px;
 }
@@ -166,4 +160,8 @@ body{
 
 .modal-content {
     border-radius: 0px;
+}
+
+.modalInput {
+    padding-bottom: 15px;
 }

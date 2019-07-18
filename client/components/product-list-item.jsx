@@ -68,18 +68,8 @@ export default class ProductListItem extends React.Component {
           <div className="card-footer text-center">
             <button className="btn btn-dark mainProductButton" onClick={this.handleView}>More</button>
             <button className="btn mainProductButton" onClick={this.handleCart}>Add to Cart </button>
-            <select className='quantity-selector' name='quantity' onChange={this.handleInputChange.bind(this)} value={this.state.quantity}>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-            </select>
+            <input placeholder='1' type="number" className='quantity-selector' name="quantity" value={this.state.quantity} onChange={this.handleInputChange.bind(this)} >
+                      </input>
           </div>
         </div>
       </div>

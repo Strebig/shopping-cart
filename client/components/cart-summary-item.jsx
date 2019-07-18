@@ -1,12 +1,20 @@
 import React from 'react';
-import { Row, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Row, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 
 export default class CartSummaryItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      newItems: []
+      newItems: [],
+      modal: false
     };
+    this.toggleUpdate = this.toggleUpdate.bind(this);
+  }
+
+  toggleUpdate() {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
   }
 
   componentDidMount() {
@@ -81,7 +89,9 @@ export default class CartSummaryItem extends React.Component {
           </ModalFooter>
         </Modal>
         {
+          
           this.props.cart.map((item, i) => {
+            
             if (item.quantity < 1) {
               item.quantity = 0;
               let activeItem = item;
@@ -91,6 +101,19 @@ export default class CartSummaryItem extends React.Component {
             }
             return (
               <div key={i}>
+                <Modal isOpen={this.state.modal} toggle={this.toggleUpdate} id="delete-modal" centered>
+                  <ModalHeader className="red"><b>Update {item.name} in Your Cart (x{item.quantity})</b></ModalHeader>
+                  <ModalBody >Update Your Cart Item: </ModalBody>
+                  <InputGroup className='modalInput col-6 '>
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>QTY</InputGroupText>
+                    </InputGroupAddon>
+                    <Input type="number" name="quantity" value={item.quantity} onChange={this.handleQuantityChange.bind(this)} data-index={i}/>
+                  </InputGroup>
+                  <ModalFooter>
+                    <Button color="outline-secondary" className="button-format" onClick={this.toggleUpdate}>Exit</Button>
+                  </ModalFooter>
+                </Modal>
                 <Row className='cartItems'>
                   <div className="col-12 col-md-6">
                     <img className="card-img-top image-details img-fluid" src={item.image} alt="Product Image" ></img>
@@ -100,8 +123,9 @@ export default class CartSummaryItem extends React.Component {
                     <h5 className="card-title red" >${(item.price / 100).toFixed(2)} Each</h5>
                     <p className="card-text">{item.shortDesc}</p>
                     <p className="card-title"><b>Quantity: <span><i className="fas fa-times fa-sm mr-1"></i></span>
-                      <input type="number" name="quantity" value={item.quantity} onChange={this.handleQuantityChange.bind(this)} data-index={i}>
+                      <input type="number" name="quantity" value={item.quantity} onChange={this.toggleUpdate} data-index={i}>
                       </input>
+                      <button onClick={this.toggleUpdate}>+</button>
                     </b></p>
                     <p className="card-title red" >Current Total: ${(item.price * item.quantity / 100).toFixed(2)}</p>
                     <div className="mb-4">

@@ -134,6 +134,7 @@ export default class App extends React.Component {
     if (found) {
       let index = cart.indexOf(found);
       let quantity = parseInt(found.quantity);
+      console.log(quantity)
 
       if (quantity > 1) {
         found.quantity--;
@@ -328,10 +329,11 @@ export default class App extends React.Component {
             <b>You've successfully submitted your order!</b>
           </ModalHeader>
           <ModalBody >
-            <h4 className="text-center">Thanks for using this Demo, and please feel free to contact me here: </h4>
-            <p>Name: Nick Strebig</p>
-            <p>Phone: 949-422-4472</p>
-            <p>Email: strebig.nick@gmail.com</p>
+            <h4 className="text-center">Thanks for using this Demo, and feel free to contact me here if you'd like to chat: </h4>
+            <p><b>Name: Nick Strebig</b></p>
+            <p><b>Phone:</b> <a href='tel:949-422-4472'>949-422-4472</a></p>
+            <p><b>Email:</b> <a href='mailto:strebig.nick@gmail.com'>strebig.nick@gmail.com</a></p>
+            <p><b>LinkedIn:</b> <a href='https://www.linkedin.com/in/nickstrebig/'>linkedin.com/in/nickstrebig</a></p>
           </ModalBody>
           <ModalFooter>
             <Button color="outline-secondary" className="button-format text-center" onClick={this.toggleSuccess}>Ok, got it!</Button>
