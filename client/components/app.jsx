@@ -134,13 +134,10 @@ export default class App extends React.Component {
     if (found) {
       let index = cart.indexOf(found);
       let quantity = parseInt(found.quantity);
-      console.log(quantity)
 
       if (quantity > 1) {
-        found.quantity--;
         cart[index] = found;
-      } else {
-        cart.splice(index, 1);
+        cart.splice(index, found.quantity);
       }
       this.setState({ cart, modal: false }, () => this.getTotalPrice(cart));
     }

@@ -81,7 +81,7 @@ export default class CartSummaryItem extends React.Component {
           </div>
         </Row>
         <Modal isOpen={this.props.modal} toggle={this.props.toggle} id="delete-modal" centered>
-          <ModalHeader className="red"><b>Remove 1 {this.props.activeItem.name} from Cart (x{this.props.activeItem.quantity})</b></ModalHeader>
+          <ModalHeader className="red"><b>Remove {this.props.activeItem.name} from Cart (x{this.props.activeItem.quantity})</b></ModalHeader>
           <ModalBody >Are you sure you want to remove this item?</ModalBody>
           <ModalFooter>
             <Button color="danger" className="button-format" data-id={this.props.activeItem.id} onClick={this.props.delete} >Remove from Cart</Button>{' '}
