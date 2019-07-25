@@ -63,7 +63,7 @@ export default class CartSummaryItem extends React.Component {
     let checkoutButton;
 
     if (this.props.cart.length !== 0) {
-      finalPrice = <h5 className="card-title red" >Total Cost: ${this.props.totalPrice}</h5>;
+      finalPrice = <h5 className="card-title red" >Total Cost: ${(this.props.totalPrice).toFixed(2)}</h5>;
       checkoutButton =
         <button onClick={this.handleCheckout.bind(this)} className="btn-dark btn-lg button-format mb-4">
           Checkout

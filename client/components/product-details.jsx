@@ -34,6 +34,9 @@ export default class ProductDetails extends React.Component {
 
   handleQuantityChange(event) {
     var quantity = event.target.value;
+    if (quantity < 1) {
+      quantity = 1;
+    } 
     this.setState({ quantity: quantity });
   }
 
