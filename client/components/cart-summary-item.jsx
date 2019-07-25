@@ -89,9 +89,9 @@ export default class CartSummaryItem extends React.Component {
           </ModalFooter>
         </Modal>
         {
-          
+
           this.props.cart.map((item, i) => {
-            
+
             if (item.quantity < 1) {
               item.quantity = 0;
               let activeItem = item;
