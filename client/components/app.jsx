@@ -135,7 +135,7 @@ export default class App extends React.Component {
       let index = cart.indexOf(found);
       let quantity = parseInt(found.quantity);
 
-      if (quantity > 1) {
+      if (quantity >= 1) {
         cart[index] = found;
         cart.splice(index, found.quantity);
       }
